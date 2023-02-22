@@ -1,4 +1,5 @@
 def get_number():
+
     while True:
         numb = input("Number: ")
 
@@ -6,6 +7,7 @@ def get_number():
             numb = int(numb)
             break
         except ValueError:
+
             try:
                 numb = float(numb)
                 break
