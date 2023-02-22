@@ -1,2 +1,3 @@
-#Empty project
 
+
+print('Hello world!')
