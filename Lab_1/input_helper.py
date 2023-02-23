@@ -4,14 +4,9 @@ def get_number():
         numb = input("Number: ")
 
         try:
-            numb = int(numb)
+            numb = float(numb)
             break
         except ValueError:
-
-            try:
-                numb = float(numb)
-                break
-            except ValueError:
-                print("Invalid input...")
+            print("Invalid input...")
 
     return numb
