@@ -27,6 +27,8 @@ def get_text() -> str:
 def process_path(file_path: str) -> str:
     """Ensures that .txt file exists in 'file_path' """
 
+    file_path = file_path.strip()
+
     while True:
         if file_exists(file_path) and file_path.endswith('.txt'):
             return file_path
