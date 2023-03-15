@@ -1,4 +1,4 @@
-from utilities.process_input import get_selection
+from utilities.input import get_input_way, get_text
 
 
 def main():
@@ -6,7 +6,9 @@ def main():
           "1. Input manually\n" +
           "2. Specify the PATH to .txt file\n")
 
-    selection = get_selection()
+    text = get_text()
+
+    #print(text)
 
 
 if __name__ == '__main__':
