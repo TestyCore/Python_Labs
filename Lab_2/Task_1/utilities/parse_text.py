@@ -16,7 +16,7 @@ def replace_endings(text: str) -> str:
 
     for word in text.split():
 
-        if re.search(r'[!?.]+[!?.]*[!?.]*', word):
+        if re.search(r'[!?]+[!?.]*[!?.]*|[!?.]+[!?.]+[!?.]*', word):
             text = text.replace(word, '.')
 
     return text
@@ -90,3 +90,31 @@ def count_non_declare(text: str) -> int:
             count += 1
 
     return count
+
+
+def count_words(text: str) -> int:
+    """Amount of words in text"""
+
+    text = re.sub(r"[!?.,;:-]", '', text)
+    counter = 0
+
+    for word in text.split():
+        try:
+            float(word)
+        except ValueError:
+            counter += 1
+
+    return counter
+
+
+def count_average_word_length(text: str) -> float:
+    text = re.sub(r"[!?.,;:-]", '', text)
+    characters = 0
+
+    for word in text.split():
+        try:
+            float(word)
+        except ValueError:
+            characters += len(word)
+
+    return characters / count_words(text)

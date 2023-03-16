@@ -1,5 +1,8 @@
 from utilities.input import get_text
-from utilities.parse_text import count_sentences, count_non_declare
+from utilities.parse_text import count_sentences,\
+                                 count_non_declare,\
+                                 count_words,\
+                                 count_average_word_length
 
 
 def main():
@@ -13,6 +16,8 @@ def main():
 
     print("\nAmount of sentences: " + count_sentences(text).__str__())
     print("\nAmount of non-declarative: " + count_non_declare(text).__str__())
+    print("\nAmount of words in text: " + count_words(text).__str__())
+    print("\nAverage word-length in text: " + count_average_word_length(text).__str__())
 
 
 if __name__ == '__main__':
