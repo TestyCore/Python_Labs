@@ -1,10 +1,11 @@
-from Task_1.helpers.constants import ABBREVIATIONS, SENTENCE_ENDINGS
+import Task_1.helpers.constants as constants
+import re
 
 
-def omit_abbreviations(text: str) -> str:
+def process_abbreviations(text: str) -> str:
     """Remove all dots in abbreviations"""
 
-    for abbr in ABBREVIATIONS:
+    for abbr in constants.ABBREVIATIONS:
         text = text.replace(abbr, abbr.replace('.', ''))
 
     return text
@@ -13,24 +14,52 @@ def omit_abbreviations(text: str) -> str:
 def replace_endings(text: str) -> str:
     """Replace '?' and '!' and '...' with period"""
 
-    for ending in SENTENCE_ENDINGS:
-        text = text.replace(ending, '.')
+    for word in text.split():
+
+        if re.search(r'[!?.]+[!?.]*[!?.]*', word):
+            text = text.replace(word, '.')
 
     return text
 
 
-def replace_floats(text: str) -> str:
-    """Removes periods in float numbers"""
+def remove_punctuation(text: str) -> str:
+    """Remove punctuation signs except endings"""
 
-    text = text.replace(',', '')
+    for sign in constants.PUNCTUATION:
+        text = text.replace(sign, ' ')
+
+    return text
+
+
+def process_floats(text: str) -> str:
+    """Removes periods in float numbers"""
 
     for word in text.split():
         try:
             float(word)
             text = text.replace(word, word.replace('.', ''))
-
         finally:
             continue
+
+    return text
+
+
+def process_extensions(text: str) -> str:
+    """Remove period in file extensions"""
+
+    for ext in constants.EXTENSIONS:
+        text = text.replace(ext, '')
+
+    return text
+
+
+def process_dates(text: str) -> str:
+    """Remove periods in dates"""
+
+    for word in text.split():
+
+        if re.search(r'\d{2}.\d{2}.\d{4}', word):
+            text = text.replace(word, word.replace('.', ''))
 
     return text
 
@@ -38,11 +67,26 @@ def replace_floats(text: str) -> str:
 def count_sentences(text: str) -> int:
     """Amount of sentences in the text"""
 
-    text = omit_abbreviations(text)
+    text = process_abbreviations(text)
+    text = remove_punctuation(text)
+    text = process_floats(text)
+    text = process_extensions(text)
+    text = process_dates(text)
     text = replace_endings(text)
-    text = replace_floats(text)
 
     if not text.endswith('.'):
         text = text + '.'
 
     return len(text.split('.')) - 1
+
+
+def count_non_declare(text: str) -> int:
+    """ Amount of non-declarative sentences"""
+
+    count = 0
+
+    for word in text.split():
+        if re.search(r'\?*!+\.*|\?+!*\.*|\.*\?+!*|\.*\?*!+', word):
+            count += 1
+
+    return count

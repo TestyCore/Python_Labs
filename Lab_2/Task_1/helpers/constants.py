@@ -4,3 +4,8 @@ ABBREVIATIONS = ["dr.", "jr.", "sr.", "mr.", "Mr.", "ms.", "mrs.", "in.", "ft.",
                  ]
 
 SENTENCE_ENDINGS = ["!?", "?!", "!", "?", "..."]
+
+PUNCTUATION = [":", ";", "-", ","]
+
+EXTENSIONS = [".zip", ".rar", ".pdf", ".docx", ".txt", ".py", ".dmg", ".pptx",
+              ".cls", ".cpp", ".cs"]

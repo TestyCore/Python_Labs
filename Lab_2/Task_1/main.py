@@ -1,5 +1,5 @@
 from utilities.input import get_text
-from utilities.parse_text import omit_abbreviations, count_sentences
+from utilities.parse_text import count_sentences, count_non_declare
 
 
 def main():
@@ -10,7 +10,9 @@ def main():
     text = get_text()
 
     print(text)
+
     print("\nAmount of sentences: " + count_sentences(text).__str__())
+    print("\nAmount of non-declarative: " + count_non_declare(text).__str__())
 
 
 if __name__ == '__main__':
