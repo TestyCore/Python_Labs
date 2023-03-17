@@ -64,57 +64,38 @@ def process_dates(text: str) -> str:
     return text
 
 
-def count_sentences(text: str) -> int:
-    """Amount of sentences in the text"""
+def get_words(text: str) -> list[str]:
+    """Returns list of all words in the text"""
 
-    text = process_abbreviations(text)
-    text = remove_punctuation(text)
-    text = process_floats(text)
-    text = process_extensions(text)
-    text = process_dates(text)
-    text = replace_endings(text)
-
-    if not text.endswith('.'):
-        text = text + '.'
-
-    return len(text.split('.')) - 1
-
-
-def count_non_declare(text: str) -> int:
-    """ Amount of non-declarative sentences"""
-
-    count = 0
+    text = re.sub(r"[!?.,;:-]", '', text)
+    words = list()
 
     for word in text.split():
-        if re.search(r'\?*!+\.*|\?+!*\.*|\.*\?+!*|\.*\?*!+', word):
-            count += 1
+        try:
+            float(word)
+        except ValueError:
+            words.append(word)
 
-    return count
+    return words
 
 
 def count_words(text: str) -> int:
     """Amount of words in text"""
 
-    text = re.sub(r"[!?.,;:-]", '', text)
-    counter = 0
-
-    for word in text.split():
-        try:
-            float(word)
-        except ValueError:
-            counter += 1
-
-    return counter
+    return len(get_words(text))
 
 
-def count_average_word_length(text: str) -> float:
-    text = re.sub(r"[!?.,;:-]", '', text)
+def count_characters(text: str) -> int:
+    """Counts amount of all characters in words only"""
+
+    words = get_words(text)
+
+    if len(words) == 0:
+        return 0
+
     characters = 0
 
-    for word in text.split():
-        try:
-            float(word)
-        except ValueError:
-            characters += len(word)
+    for word in words:
+        characters += len(word)
 
-    return characters / count_words(text)
+    return characters

@@ -14,9 +14,7 @@ def get_input_way() -> str:
 def get_text() -> str:
     """ Returns text according to chosen input_way """
 
-    input_way = get_input_way()
-
-    if input_way == '1':
+    if get_input_way() == '1':
         text = input('\nType text: ')
     else:
         text = load_file(input('\nPATH: '))
@@ -44,3 +42,22 @@ def load_file(file_path: str) -> str:
 
     with open(file_path, 'r', encoding='utf8') as file:
         return file.read()
+
+
+def get_k_n():
+
+    if get_input_way() == '2':
+        return 10, 4
+
+    k, n = 0, 0
+
+    while True:
+
+        try:
+            k, n = map(int, input("\nEnter K and N (separated with space): ").split())
+            return k, n
+        except (ValueError, TypeError):
+            print("Invalid Input...")
+
+
+

@@ -3,8 +3,6 @@ ABBREVIATIONS = ["dr.", "jr.", "sr.", "mr.", "Mr.", "ms.", "mrs.", "in.", "ft.",
                  "inc.", "a.m.", "p.m.", "U.S.A."
                  ]
 
-SENTENCE_ENDINGS = ["!?", "?!", "!", "?", "..."]
-
 PUNCTUATION = [":", ";", "-", ","]
 
 EXTENSIONS = [".zip", ".rar", ".pdf", ".docx", ".txt", ".py", ".dmg", ".pptx",
