@@ -15,8 +15,8 @@ def main():
     k, n = get_k_n()
 
     print("\nText:\n" + text)
-    print("\nAmount of sentences: " + pars.count_sentences(text).__str__())
-    print("Amount of non-declarative: " + pars.count_non_declare(text).__str__())
+    print("\nAmount of sentences: " + pars.count_sentences(text, False).__str__())
+    print("Amount of non-declarative: " + pars.count_sentences(text, True).__str__())
     print("Average sentence-length: " + pars.count_avg_sentence_length(text).__str__())
     print("Average word-length: " + pars.count_avg_word_length(text).__str__())
     print("Top-K repeated N-grams: " + pars.top_k_n_grams(text, k, n).__str__())

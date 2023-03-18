@@ -1,45 +1,44 @@
-import Task_1.helpers.parse_helpers as prs
+import Lab_2.Task_1.helpers.parse_helpers as prs
 import re
 
 
-def count_sentences(text: str) -> int:
+def count_sentences(text: str, is_non_declare: bool) -> int:
     """Amount of sentences in the text"""
 
+    if len(text) == 0 or prs.count_words(text) == 0 or prs.if_term_marks_only(text):
+        return 0
+
     text = prs.process_abbreviations(text)
-    text = prs.remove_punctuation(text)
-    text = prs.process_floats(text)
-    text = prs.process_extensions(text)
-    text = prs.process_dates(text)
-    text = prs.replace_endings(text)
+    text += '.'
 
-    if not text.endswith('.') and prs.count_words(text) != 0:
-        text = text + '.'
+    if is_non_declare:
+        declare = re.findall(r'(?<=\w| )+([.])+(?= |$)', text)
+        totally = re.findall(r'(?<=\w)+([?!.])+(?= |$)', text)
 
-    return len(text.split('.')) - 1
+        return len(totally) - len(declare)
 
+    else:
+        totally = re.findall(r'(?<=\w)+([?!.])+(?= |$)', text)
 
-def count_non_declare(text: str) -> int:
-    """ Amount of non-declarative sentences"""
-
-    counter = 0
-
-    for word in text.split():
-        if re.search(r'\?*!+\.*|\?+!*\.*|\.*\?+!*|\.*\?*!+', word):
-            counter += 1
-
-    return counter
+        return len(totally)
 
 
 def count_avg_sentence_length(text: str) -> float:
     """Counts average sentence-length in the text"""
 
-    return prs.count_characters(text) / (count_sentences(text))
+    if count_sentences(text, False) == 0:
+        return 0
+
+    return round(prs.count_characters(text) / (count_sentences(text, False)), 2)
 
 
 def count_avg_word_length(text: str) -> float:
     """Counts average word-length in the text"""
 
-    return prs.count_characters(text) / len(prs.get_words(text))
+    if len(prs.get_words(text)) == 0:
+        return 0
+
+    return round(prs.count_characters(text) / len(prs.get_words(text)), 2)
 
 
 def top_k_n_grams(text: str, k: int = 10, n: int = 4) -> list[str]:

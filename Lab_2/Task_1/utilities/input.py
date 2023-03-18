@@ -5,7 +5,7 @@ def get_input_way() -> str:
     """ Returns choice how to get text (manually or from file) """
 
     while True:
-        input_way = input("Choose [12]: ")
+        input_way = input("Choose [1/2]: ")
 
         if input_way == '1' or input_way == '2':
             return input_way

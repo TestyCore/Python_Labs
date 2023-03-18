@@ -1,4 +1,4 @@
-import Task_1.helpers.constants as constants
+import Lab_2.Task_1.helpers.constants as constants
 import re
 
 
@@ -11,63 +11,14 @@ def process_abbreviations(text: str) -> str:
     return text
 
 
-def replace_endings(text: str) -> str:
-    """Replace '?' and '!' and '...' with period"""
-
-    for word in text.split():
-
-        if re.search(r'[!?]+[!?.]*[!?.]*|[!?.]+[!?.]+[!?.]*', word):
-            text = text.replace(word, '.')
-
-    return text
-
-
-def remove_punctuation(text: str) -> str:
-    """Remove punctuation signs except endings"""
-
-    for sign in constants.PUNCTUATION:
-        text = text.replace(sign, ' ')
-
-    return text
-
-
-def process_floats(text: str) -> str:
-    """Removes periods in float numbers"""
-
-    for word in text.split():
-        try:
-            float(word)
-            text = text.replace(word, word.replace('.', ''))
-        finally:
-            continue
-
-    return text
-
-
-def process_extensions(text: str) -> str:
-    """Remove period in file extensions"""
-
-    for ext in constants.EXTENSIONS:
-        text = text.replace(ext, '')
-
-    return text
-
-
-def process_dates(text: str) -> str:
-    """Remove periods in dates"""
-
-    for word in text.split():
-
-        if re.search(r'\d{2}.\d{2}.\d{4}', word):
-            text = text.replace(word, word.replace('.', ''))
-
-    return text
-
-
 def get_words(text: str) -> list[str]:
     """Returns list of all words in the text"""
 
+    text = process_abbreviations(text)
+
     text = re.sub(r"[!?.,;:-]", '', text)
+    text = re.sub(r"[!-/:-?@\[-_{-˜]", '', text)
+
     words = list()
 
     for word in text.split():
@@ -99,3 +50,18 @@ def count_characters(text: str) -> int:
         characters += len(word)
 
     return characters
+
+
+def if_term_marks_only(text: str) -> bool:
+    """ Checks if text contains only '?', '!', '.', ' ' """
+
+    matches = re.search(r'([ .?!])+', text)
+
+    if matches is None:
+        return False
+
+    if text == matches.group(0):
+        return True
+    else:
+        return False
+
