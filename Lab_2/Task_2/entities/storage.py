@@ -41,20 +41,24 @@ class Storage:
 
         return list(self.data)
 
-    def find(self, key: str) -> str:
+    def find(self, key: str) -> bool:
         """Returns key if key is present in __data"""
 
         if key in self.data:
-            return key
+            return True
         else:
-            return "No '{key}' matches found."
+            return False
 
-    def load(self, username: str):
-        """Loads data from storage container"""
+    def load(self, username: str, switch=False):
+        """Loads data to storage from container with the given path.
 
+        :param username : name of the source file to load data from;
+        :param switch: if loading is performed on user switch or not."""
         path: str = fm.get_path(self.__FILE_PATH, f"{username}.pkl")
 
         if not fm.verify_path(path):
+            if switch:
+                self.data = set()
             return
 
         with open(path, 'rb') as file:
@@ -63,7 +67,7 @@ class Storage:
             except pickle.UnpicklingError:
                 new_data = set()
 
-            self.data = new_data
+        self.data = new_data  # (self.data | new_data) if not switch else new_data
 
     def save(self, username: str):
         """Saves data to the file"""
