@@ -4,8 +4,11 @@ from Lab_2.Task_2.entities.user import User
 from Lab_2.Task_2.helpers.input_manager import command_parse,\
                                                arg_parse,\
                                                validate_username,\
-                                               get_username
-from Lab_2.Task_2.helpers.constants.messages import START_MESSAGE, CLI_COMMANDS
+                                               get_username,\
+                                               get_choice
+from Lab_2.Task_2.helpers.constants.messages import START_MESSAGE,\
+                                                    CLI_COMMANDS,\
+                                                    SAVE_QUESTION
 
 
 class Terminal:
@@ -99,6 +102,11 @@ class Terminal:
         username = ''.join(args)
 
         if len(args) == 1 and validate_username(username):
+            choice = get_choice(SAVE_QUESTION.format(self.__user.username))
+
+            if choice == 'y':
+                self.__user.save_data()
+
             self.__user.switch(username)
         else:
             print("Invalid username.")

@@ -1,6 +1,7 @@
 from Lab_2.Task_2.helpers.constants.messages import CLI_COMMANDS
 import re
 
+
 def command_parse(prompt: str) -> str:
 
     comm_args = prompt.split(maxsplit=1)

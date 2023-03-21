@@ -62,10 +62,8 @@ class Storage:
             return []
 
     def load(self, username: str, switch=False):
-        """Loads data to storage from container with the given path.
+        """Loads data to storage from container with the given path"""
 
-        :param username : name of the source file to load data from;
-        :param switch: if loading is performed on user switch or not."""
         path: str = fm.get_path(self.__FILE_PATH, f"{username}.pkl")
 
         if not fm.verify_path(path):

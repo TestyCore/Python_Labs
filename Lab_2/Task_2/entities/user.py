@@ -73,15 +73,17 @@ class User:
 
     def switch(self, new_user: str):
         """Switches to another user"""
-        
-        ans: str = get_choice(LOAD_QUESTION.format(new_user))
 
-        if ans == 'y':
+        print(f"\nSwitched to {new_user}")
+        choice: str = get_choice(LOAD_QUESTION.format(new_user))
+
+        if choice == 'y':
             self._container.load(new_user, switch=True)
-        elif ans == 'n':
+        elif choice == 'n':
             self.container.data = set()
 
         self.username = new_user
+
 
 
 

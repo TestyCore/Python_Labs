@@ -15,4 +15,5 @@ START_MESSAGE: str = "\n*********** Commands ***********\n\n"
 for comm in CLI_COMMANDS.keys():
     START_MESSAGE += f"{comm} {CLI_COMMANDS[comm]}\n"
 
-LOAD_QUESTION: str = "Would you like to load storage for user '{}'? [y/n]: "
+LOAD_QUESTION: str = "Would you like to load '{}`s' data? [y/n]: "
+SAVE_QUESTION: str = "Would you like to save '{}`s' data before switching? [y/n]: "
