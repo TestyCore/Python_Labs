@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import pickle
 import os
+from re import Pattern, match, error
 from typing import NoReturn
 import Lab_2.Task_2.helpers.file_manager as fm
 
@@ -34,7 +37,7 @@ class Storage:
         if key in self.data:
             self.data.remove(key)
         else:
-            print(f"Aborting. No '{key}' matches found.")
+            print(f"No '{key}' matches found.")
 
     def list(self) -> list:
         """Returns list of elements"""
@@ -48,6 +51,15 @@ class Storage:
             return True
         else:
             return False
+
+    def grep(self, regex: str | bytes | Pattern[bytes]) -> list:
+        """Uses regular expressions to find elements in storage
+
+        :param regex: regex-like object to filter data."""
+        try:
+            return list(filter(lambda k: match(regex, k), self.data))
+        except os.error:
+            return []
 
     def load(self, username: str, switch=False):
         """Loads data to storage from container with the given path.
@@ -67,7 +79,7 @@ class Storage:
             except pickle.UnpicklingError:
                 new_data = set()
 
-        self.data = new_data  # (self.data | new_data) if not switch else new_data
+        self.data = new_data
 
     def save(self, username: str):
         """Saves data to the file"""

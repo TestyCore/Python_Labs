@@ -1,4 +1,9 @@
+from __future__ import annotations
+
 from Lab_2.Task_2.entities.storage import Storage
+from Lab_2.Task_2.helpers.constants.messages import LOAD_QUESTION
+from Lab_2.Task_2.helpers.input_manager import get_choice
+from re import Pattern
 
 
 class User:
@@ -52,6 +57,12 @@ class User:
         else:
             print("No matches found.")
 
+    def grep_keys(self, regex: str | bytes | Pattern[bytes]):
+        """Prints the output of Storage's find method.
+
+        :param regex: single regex tuple."""
+        print(self.container.grep(regex))
+
     def save_data(self):
         """Saves data to the file with user's name as a filename."""
         self.container.save(self.username)
@@ -59,4 +70,33 @@ class User:
     def load_data(self):
         """Loads data from the file with user's name as a filename."""
         self.container.load(self.username)
+
+    def switch(self, new_user: str):
+        """Switches to another user"""
+        
+        ans: str = get_choice(LOAD_QUESTION.format(new_user))
+
+        if ans == 'y':
+            self._container.load(new_user, switch=True)
+        elif ans == 'n':
+            self.container.data = set()
+
+        self.username = new_user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
