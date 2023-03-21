@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from Lab_2.Task_2.entities.storage import Storage
 from Lab_2.Task_2.helpers.constants.messages import LOAD_QUESTION
-from Lab_2.Task_2.helpers.input_manager import get_choice
+from Lab_2.Task_2.helpers.input_manager import Input
 from re import Pattern
 
 
@@ -14,19 +14,19 @@ class User:
 
     @property
     def username(self) -> str:
-        """Getter of attribute _username"""
+        """Getter"""
 
         return self._username
 
     @username.setter
     def username(self, new_username: str):
-        """Setter of attribute __username"""
+        """Setter"""
 
         self._username = new_username
 
     @property
     def container(self) -> Storage:
-        """Getter of attribute __container"""
+        """Getter"""
 
         return self._container
 
@@ -36,16 +36,17 @@ class User:
         self.container.add(*keys)
 
     def remove_key(self, key: str):
-        """Removes a single key from container"""
+        """Removes key from container"""
 
         self.container.remove(key)
 
     def list_keys(self):
-        """Prints data in user-friendly format."""
+        """Prints data"""
         print(f"[{', '.join(self.container.list())}]")
 
     def find_keys(self, keys: tuple[str]):
-        """Prints the output of Storage's find method"""
+        """Prints all matches"""
+
         matches = list()
 
         for key in keys:
@@ -58,9 +59,7 @@ class User:
             print("No matches found.")
 
     def grep_keys(self, regex: str | bytes | Pattern[bytes]):
-        """Prints the output of Storage's find method.
-
-        :param regex: single regex tuple."""
+        """Prints regex matches"""
         print(self.container.grep(regex))
 
     def save_data(self):
@@ -68,14 +67,14 @@ class User:
         self.container.save(self.username)
 
     def load_data(self):
-        """Loads data from the file with user's name as a filename."""
+        """Loads data from file"""
         self.container.load(self.username)
 
     def switch(self, new_user: str):
         """Switches to another user"""
 
         print(f"\nSwitched to {new_user}")
-        choice: str = get_choice(LOAD_QUESTION.format(new_user))
+        choice: str = Input.get_choice(LOAD_QUESTION.format(new_user))
 
         if choice == 'y':
             self._container.load(new_user, switch=True)

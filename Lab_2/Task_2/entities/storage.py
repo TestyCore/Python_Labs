@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pickle
 import os
-from re import Pattern, match, error
+from re import Pattern, match
 from typing import NoReturn
 import Lab_2.Task_2.helpers.file_manager as fm
 
@@ -16,19 +16,16 @@ class Storage:
 
     @property
     def data(self) -> set[str]:
-        """Getter __date"""
-
+        """Getter"""
         return self.__data
 
     @data.setter
     def data(self, new_data: set[str]) -> NoReturn:
-        """Setter __data"""
-
+        """Setter"""
         self.__data = new_data
 
     def add(self, *keys: tuple[str]):
         """Adds new keys to the storage"""
-
         self.data.update(*keys)
 
     def remove(self, key: str):
@@ -41,11 +38,10 @@ class Storage:
 
     def list(self) -> list:
         """Returns list of elements"""
-
         return list(self.data)
 
     def find(self, key: str) -> bool:
-        """Returns key if key is present in __data"""
+        """Checks if key exists"""
 
         if key in self.data:
             return True
@@ -53,16 +49,14 @@ class Storage:
             return False
 
     def grep(self, regex: str | bytes | Pattern[bytes]) -> list:
-        """Uses regular expressions to find elements in storage
-
-        :param regex: regex-like object to filter data."""
+        """Regex to find elements in storage"""
         try:
             return list(filter(lambda k: match(regex, k), self.data))
         except os.error:
             return []
 
     def load(self, username: str, switch=False):
-        """Loads data to storage from container with the given path"""
+        """Loads data from file"""
 
         path: str = fm.get_path(self.__FILE_PATH, f"{username}.pkl")
 
@@ -80,7 +74,7 @@ class Storage:
         self.data = new_data
 
     def save(self, username: str):
-        """Saves data to the file"""
+        """Saves data to file"""
 
         path: str = fm.get_path(self.__FILE_PATH, f"{username}.pkl")
 
