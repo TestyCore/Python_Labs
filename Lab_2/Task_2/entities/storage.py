@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 import pickle
 import os
-from re import Pattern, match
+from re import match
 from typing import NoReturn
 import Lab_2.Task_2.helpers.file_manager as fm
 
@@ -24,9 +22,9 @@ class Storage:
         """Setter"""
         self.__data = new_data
 
-    def add(self, *keys: tuple[str]):
+    def add(self, keys: tuple[str]):
         """Adds new keys to the storage"""
-        self.data.update(*keys)
+        self.data.update(keys)
 
     def remove(self, key: str):
         """Removes key from storage"""
@@ -48,7 +46,7 @@ class Storage:
         else:
             return False
 
-    def grep(self, regex: str | bytes | Pattern[bytes]) -> list:
+    def grep(self, regex: str) -> list:
         """Regex to find elements in storage"""
         try:
             return list(filter(lambda k: match(regex, k), self.data))
@@ -71,7 +69,10 @@ class Storage:
             except pickle.UnpicklingError:
                 new_data = set()
 
-        self.data = new_data
+        if switch:
+            self.data = new_data
+        else:
+            self.data.update(new_data)
 
     def save(self, username: str):
         """Saves data to file"""

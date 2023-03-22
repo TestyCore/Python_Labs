@@ -15,7 +15,10 @@ def count_sentences(text: str, is_non_declare: bool) -> int:
         declare = re.findall(r'(?<=\w| )+([.])+(?= |$)', text)
         totally = re.findall(r'(?<=\w)+([?!.])+(?= |$)', text)
 
-        return len(totally) - len(declare)
+        if len(totally) - len(declare) < 0:
+            return 0
+        else:
+            return len(totally) - len(declare)
 
     else:
         totally = re.findall(r'(?<=\w)+([?!.])+(?= |$)', text)
@@ -47,10 +50,13 @@ def top_k_n_grams(text: str, k: int = 10, n: int = 4) -> list[str]:
     text = re.sub(r"[!?.,;:-]", '', text)
 
     words = prs.get_words(text)
-    n_grams = tuple(
-        " ".join(words[i:i+n])
-        for i in range(len(words)) if i + n <= len(words)
-    )
+
+    n_grams = list()
+
+    for i in range(len(words)):
+
+        if i + n <= len(words):
+            n_grams.append(" ".join(words[i:i + n]))
 
     unique_n_grams = sorted(set(n_grams), key=n_grams.count, reverse=True)
 

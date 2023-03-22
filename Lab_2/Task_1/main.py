@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../..")
+
 from utilities.input import get_text, get_k_n
 import utilities.parser as pars
 

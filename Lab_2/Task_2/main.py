@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../..")
+
 from entities.terminal import Terminal
 
 

@@ -1,5 +1,5 @@
 import unittest
-import Lab_2.Task_1.utilities.parser as prs
+import utilities.parser as prs
 
 
 class TestCountSentences(unittest.TestCase):
