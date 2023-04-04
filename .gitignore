@@ -1,3 +1,6 @@
 .idea/
 */*__/
 */venv
+.DS_Store
+Lectures/
+**/data/
