@@ -1,6 +1,7 @@
 
 def main():
-    print("")
+    s = "asd"
+    print(dir(s))
 
 
 if __name__ == "__main__":
