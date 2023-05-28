@@ -121,7 +121,7 @@ def get_items(obj) -> dict[str, Any]:
         }
 
 
-def get_key(value, obj: dict):
+def get_key(value, obj: dict) -> int:
     return [key for key in obj if obj[key] == value][0]
 
 

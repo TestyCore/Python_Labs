@@ -1,16 +1,30 @@
-from types import LambdaType
+from types import LambdaType, FunctionType, MethodType, CodeType,\
+    ModuleType, CellType
 
-
-from types import FunctionType, MethodType, CodeType, ModuleType, CellType
-
-
+JSON_TYPE: str = r"<class '(\w\S+)'>_"
 JSON = ('''{{
     "{type}_{id:x}": {{
     {items}
     }}
 }}''')
 
-JSON_TYPE: str = r"<class '(\w\S+)'>_"
+
+XML_TYPE: str = r'type="(\w+)"'
+XML = ('''
+<object type="{type}" id="{id:x}">
+{items}
+</object>
+''')
+XML_ITEM = ('''
+<item>
+    <key>
+        {key}
+    </key>
+    <value>
+        {value}
+    </value>
+</item>
+''')
 
 PRIMITIVE_TYPES: tuple = (int, float, complex, str, bool, type(None))
 

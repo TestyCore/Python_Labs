@@ -38,7 +38,7 @@ class JSONSerializer:
             self._load_from_json(json)
         )
 
-    def _load_to_json(self, obj: dict):
+    def _load_to_json(self, obj: dict) -> str:
         json_format = ""
 
         for k, v in obj.items():

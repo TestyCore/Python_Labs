@@ -1,4 +1,5 @@
 from serializers.jsonserializer import JSONSerializer
+from serializers.xmlserializer import XMLSerializer
 
 
 class User:
@@ -12,20 +13,32 @@ class User:
     def pri(self):
         print("Vorontsov")
 
-    @classmethod
-    def username(cls, a) -> str:
-        return "self._username" * a
+    def __repr__(self):
+        return f"User('{self.username}')"
+
+    def __str__(self):
+        return f"Username - {self.username}"
 
 
 def main():
     a = User("slava")
-    json = JSONSerializer()
-    b = json.dumps(a)
-    c = json.loads(b)
+    print(a.__str__())
+    print(repr(a))
+    # json = JSONSerializer()
+    # b = json.dumps(a)
+    # c = json.loads(b)
+    #
+    # c.change()
+    # print(c.username)
+    # c.pri()
 
-    c.change()
-    print(c.username)
-    c.pri()
+    json = XMLSerializer()
+    b = json.dumps(a)
+    #c = json.loads(b)
+
+   # c.change()
+   # print(b)
+   # c.pri()
 
 
 if __name__ == "__main__":
