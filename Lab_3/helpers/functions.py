@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from types import FunctionType, MethodType, CodeType, ModuleType,\
     BuiltinMethodType, BuiltinFunctionType
 from typing import Any, Collection
@@ -115,3 +117,15 @@ def get_items(obj) -> dict[str, Any]:
                 )
             }
         }
+
+
+def get_key(value, obj: dict):
+    return [key for key in obj if obj[key] == value][0]
+
+
+def to_number(s: str) -> int | float | complex | None:
+    for num_type in (int, float, complex):
+        try:
+            return num_type(s)
+        except (ValueError, TypeError):
+            pass
