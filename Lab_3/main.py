@@ -7,20 +7,25 @@ class User:
         self.username = username
 
     def change(self):
-        self.username = "anton"
+        self.username = "Anton"
+
+    def pri(self):
+        print("Vorontsov")
 
     @classmethod
     def username(cls, a) -> str:
-        """Getter"""
-
         return "self._username" * a
 
 
 def main():
     a = User("slava")
-
     json = JSONSerializer()
-    print(json.dumps(a))
+    b = json.dumps(a)
+    c = json.loads(b)
+
+    c.change()
+    print(c.username)
+    c.pri()
 
 
 if __name__ == "__main__":

@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from types import FunctionType, MethodType, CodeType, ModuleType,\
-    BuiltinMethodType, BuiltinFunctionType
-from typing import Any, Collection
+import re
 
-from helpers.constants import IGNORED_FIELDS, IGNORED_FIELD_TYPES
+from types import FunctionType, MethodType, CodeType, ModuleType, \
+    BuiltinMethodType, BuiltinFunctionType, CellType
+from typing import Any, Collection, Iterable
+
+from helpers.constants import IGNORED_FIELDS, IGNORED_FIELD_TYPES, TYPE_MAPPING
 
 
 def get_items(obj) -> dict[str, Any]:
@@ -129,3 +131,67 @@ def to_number(s: str) -> int | float | complex | None:
             return num_type(s)
         except (ValueError, TypeError):
             pass
+
+
+def create_object(obj_type: type, obj_data):
+    if issubclass(obj_type, dict):
+        return obj_data
+
+    elif issubclass(obj_type, Iterable):
+        return obj_type(obj_data.values())
+
+    elif issubclass(obj_type, CodeType):
+        return CodeType(*list(obj_data.values()))
+
+    elif issubclass(obj_type, FunctionType):
+        if obj_data.get('closure'):
+            closure = tuple([CellType(x) for x in obj_data.get('closure')])
+        elif obj_data.get('closure') and '__class__' in obj_data.get('freevars'):
+            closure = tuple([CellType(...) for _ in obj_data.get('closure')])
+        else:
+            closure = tuple()
+
+        obj = FunctionType(
+            code=CodeType(*list(obj_data.values())[:16]),
+            globals=obj_data.get('globals'),
+            name=obj_data['name'],
+            closure=closure
+        )
+        obj.__qualname__ = obj_data.get('qualname')
+        obj.__globals__[obj.__name__] = obj
+
+        return obj
+
+    elif issubclass(obj_type, MethodType):
+        return MethodType(
+            obj_data.get('__func__'),
+            obj_data.get('__self__'),
+        )
+
+    elif issubclass(obj_type, (staticmethod, classmethod)):
+        return create_object(FunctionType, obj_data)
+
+    elif issubclass(obj_type, type):
+        obj = type(obj_data.get('name'), obj_data.get('mro'), obj_data.get('attrs'))
+
+        try:
+            obj.__init__.__closure__[0].cell_contents = obj
+        except (AttributeError, IndexError):
+            ...
+
+        return obj
+
+    elif issubclass(obj_type, ModuleType):
+        return __import__(obj_data.get('name'))
+
+    else:
+        obj = object.__new__(obj_data.get('class'))
+        obj.__dict__ = obj_data.get('attrs')
+        return obj
+
+
+def type_from_str(s: str, pattern: str) -> type:
+    if not re.search(pattern, s):
+        return type(None)
+
+    return TYPE_MAPPING[re.search(pattern, s).group(1)]
