@@ -1,9 +1,11 @@
-from types import (
-    FunctionType, LambdaType, MethodType,
-    CodeType, CellType, ModuleType
-)
+from types import LambdaType
 
-JSON = ('''{{ "{type}_{id:x}": {{
+
+from types import FunctionType, MethodType, CodeType, ModuleType, CellType
+
+
+JSON = ('''{{
+    "{type}_{id:x}": {{
     {items}
     }}
 }}''')
@@ -40,5 +42,18 @@ TYPE_MAPPING = {
     'type': type,
     'module': ModuleType,
     'object': object,
+}
+
+IGNORED_FIELDS: set[str] = {
+        '__weakref__',
+        '__subclasshook__',
+        '__dict__',
+        '__doc__'
+}
+IGNORED_FIELD_TYPES: set[str] = {
+    'BuiltinFunctionType', 'BuiltinMethodType',
+    'WrapperDescriptorType', 'MethodDescriptorType',
+    'MappingProxyType', 'GetSetDescriptorType',
+    'MemberDescriptorType'
 }
 

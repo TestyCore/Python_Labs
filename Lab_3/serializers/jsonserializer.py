@@ -1,4 +1,6 @@
 from helpers.constants import JSON, BOOL_TYPE, TYPE_MAPPING
+from helpers.functions import get_items
+from helpers.jsonformat import JSONFormat
 
 
 class JSONSerializer:
@@ -14,6 +16,6 @@ class JSONSerializer:
         return JSON.format(
             type=type(obj) if type(obj) in TYPE_MAPPING.values() else object,
             id=id(obj),
-            items=self.formatter.to_json(self.get_items(obj), self.dumps)
+            items=JSONFormat.to_json(get_items(obj), self.dumps)
         )
 
