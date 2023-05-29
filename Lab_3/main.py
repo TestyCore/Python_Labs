@@ -9,29 +9,29 @@ class User:
 
     def change(self):
         self.username = "Anton"
-
-    def pri(self):
-        print("Vorontsov")
-
-    def __repr__(self):
-        return f"User('{self.username}')"
-
+    #
+    # def pri(self):
+    #     print("Vorontsov")
+    #
+    # def __repr__(self):
+    #     return f"User('{self.username}')"
+    #
     # def __str__(self):
     #     return f"Username - {self.username}"
 
 
 def main():
     a = User("slava")
+    # print(type(a))
     # print(a.__str__())
     # print(repr(a))
-
-
     # a = [1, 2, 5]
     json = JSONSerializer()
     b = json.dumps(a)
     c = json.loads(b)
 
     # c.change()
+    # print(c.name) Error
     print(c)
     # c.pri()
 
