@@ -25,6 +25,7 @@ XML_ITEM = ('''
     </value>
 </item>
 ''')
+XML_PRIMITIVE = '<primitive type="{type}">{obj}</primitive>'
 
 PRIMITIVE_TYPES: tuple = (int, float, complex, str, bool, type(None))
 

@@ -17,7 +17,7 @@ class JSONSerializer:
         return JSON.format(
             type=type(obj) if type(obj) in TYPE_MAPPING.values() else object,
             id=id(obj),
-            items=self._load_to_json(get_items(obj))
+            items=self.__load_to_json(get_items(obj))
         )
 
     def loads(self, json: str):
@@ -35,10 +35,10 @@ class JSONSerializer:
 
         return create_object(
             type_from_str(json, JSON_TYPE),
-            self._load_from_json(json)
+            self.__load_from_json(json)
         )
 
-    def _load_to_json(self, obj: dict) -> str:
+    def __load_to_json(self, obj: dict) -> str:
         json_format = ""
 
         for k, v in obj.items():
@@ -53,7 +53,7 @@ class JSONSerializer:
 
         return json_format
 
-    def _load_from_json(self, template: str) -> dict:
+    def __load_from_json(self, template: str) -> dict:
         obj: dict = {}
         lines: list[str] = template.split("\n")
         it: Iterator[str] = enumerate(lines)
