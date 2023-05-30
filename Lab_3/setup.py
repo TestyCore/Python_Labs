@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='JsOnXmLSe814Rializer749',
+setup(name='serjx',
       version='1.0',
       description='Serializer',
       packages=['Lab_3', 'Lab_3/helpers', 'Lab_3/serializers'],

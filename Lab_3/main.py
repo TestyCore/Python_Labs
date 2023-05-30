@@ -46,7 +46,8 @@ def outer():  # внешняя функция
 
 
 def main():
-    ser = JSONSerializer()
+
+    # ser = JSONSerializer()
 
 
     # a = User("slava")

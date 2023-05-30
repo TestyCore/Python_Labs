@@ -82,3 +82,9 @@ class XMLSerializer:
 
             counter += bool(re.search(rf"<{tagname}.*>", line.strip("\t\n ")))
             counter -= bool(re.search(rf"</{tagname}>", line.strip("\t\n ")))
+
+    def dump(self, obj, file_to) -> None:
+        file_to.write(self.dumps(obj))
+
+    def load(self, file_from):
+        return self.loads(file_from.read())
