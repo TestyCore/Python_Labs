@@ -30,7 +30,7 @@ XML_PRIMITIVE = '<primitive type="{type}">{obj}</primitive>'
 PRIMITIVE_TYPES: tuple = (int, float, complex, str, bool, type(None))
 
 BOOL_TYPE: dict[bool, str] = {
-        None: 'null',
+        None: 'none',
         True: 'true',
         False: 'false'
     }

@@ -78,3 +78,10 @@ class JSONSerializer:
                 obj[self.loads(key)] = self.loads('\n'.join(lines[start:i]))
 
         return obj
+
+    def dump(self, obj, file_to) -> None:
+        file_to.write(self.dumps(obj))
+
+    def load(self, file_from):
+        return self.loads(file_from.read())
+        # return )
