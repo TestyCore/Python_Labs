@@ -3,10 +3,11 @@ from __future__ import annotations
 import re
 
 from types import FunctionType, MethodType, CodeType, ModuleType, \
-    BuiltinMethodType, BuiltinFunctionType, CellType
+    BuiltinMethodType, BuiltinFunctionType, CellType, GeneratorType
 from typing import Any, Collection, Iterable
 
-from helpers.constants import IGNORED_FIELDS, IGNORED_FIELD_TYPES, TYPE_MAPPING
+from helpers.constants import IGNORED_FIELDS, IGNORED_FIELD_TYPES, TYPE_MAPPING,\
+    TYPE, ITERATOR_TYPE, VALUE
 
 
 def get_items(obj) -> dict[str, Any]:
@@ -37,6 +38,20 @@ def get_items(obj) -> dict[str, Any]:
             "lnotab": obj.co_lnotab,
             "freevars": obj.co_freevars,
             "cellvars": obj.co_cellvars,
+        }
+    elif isinstance(obj, property):
+        return {
+            "getter": obj.fget,
+            "setter": obj.fset,
+            "deleter": obj.fdel,
+        }
+
+    elif isinstance(obj, GeneratorType):
+        a = []
+        for i in obj:
+            a.append(i)
+        return{
+            "values": a
         }
 
     elif isinstance(obj, FunctionType):
@@ -137,6 +152,14 @@ def create_object(obj_type: type, obj_data):
     if issubclass(obj_type, dict):
         return obj_data
 
+    elif issubclass(obj_type, GeneratorType):
+        it = iter(obj_data.get("values"))
+
+        def generator_func():
+            yield from it
+
+        return generator_func()
+
     elif issubclass(obj_type, Iterable):
         return obj_type(obj_data.values())
 
@@ -162,6 +185,13 @@ def create_object(obj_type: type, obj_data):
 
         return obj
 
+    elif issubclass(obj_type, property):
+        return property(fget=obj_data.get("getter"),
+                        fdel=obj_data.get("deleter"),
+                        fset=obj_data.get("setter"))
+
+
+
     elif issubclass(obj_type, MethodType):
         return MethodType(
             obj_data.get('__func__'),
@@ -184,6 +214,12 @@ def create_object(obj_type: type, obj_data):
     elif issubclass(obj_type, ModuleType):
         return __import__(obj_data.get('name'))
 
+    # if obj_data[TYPE] == ITERATOR_TYPE:
+    #     return iter(create_object(obj_type, item) for item in obj_data[VALUE])
+
+    # elif issubclass(obj_type, type(iter)):
+    #     return iter(create_object(obj_type, item) for item in obj_data[VALUE])
+
     else:
         obj = object.__new__(obj_data.get('class'))
         obj.__dict__ = obj_data.get('attrs')
@@ -195,3 +231,7 @@ def type_from_str(s: str, pattern: str) -> type:
         return type(None)
 
     return TYPE_MAPPING[re.search(pattern, s).group(1)]
+
+
+def is_iterable(obj):
+    return hasattr(obj, '__iter__') and hasattr(obj, '__next__') and callable(obj.__iter__)

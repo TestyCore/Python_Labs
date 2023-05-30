@@ -70,11 +70,6 @@ class PrimitiveTypes(unittest.TestCase):
             self.assertEqual(self.json.load(t), 3j+2)
 
         with (open("from.txt", "w+") as f, open("from.txt", "r") as t):
-            self.json.dump("string", f)
-            f.seek(0)
-            self.assertEqual(self.json.load(t), "string")
-
-        with (open("from.txt", "w+") as f, open("from.txt", "r") as t):
             self.json.dump(True, f)
             f.seek(0)
             self.assertEqual(self.json.load(t), True)
@@ -83,6 +78,11 @@ class PrimitiveTypes(unittest.TestCase):
             self.json.dump("", f)
             f.seek(0)
             self.assertEqual(self.json.load(t), "")
+
+        with (open("from.txt", "w+") as f, open("from.txt", "r") as t):
+            self.json.dump("string", f)
+            f.seek(0)
+            self.assertEqual(self.json.load(t), "string")
 
 
 if __name__ == '__main__':

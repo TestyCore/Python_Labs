@@ -1,5 +1,6 @@
 from types import LambdaType, FunctionType, MethodType, CodeType,\
-    ModuleType, CellType
+    ModuleType, CellType, GeneratorType
+from typing import Final
 
 JSON_TYPE: str = r"<class '(\w\S+)'>_"
 JSON = ('''{{
@@ -57,6 +58,8 @@ TYPE_MAPPING = {
     'type': type,
     'module': ModuleType,
     'object': object,
+    'property': property,
+    'generator': GeneratorType
 }
 
 IGNORED_FIELDS: set[str] = {
@@ -71,4 +74,8 @@ IGNORED_FIELD_TYPES: set[str] = {
     'MappingProxyType', 'GetSetDescriptorType',
     'MemberDescriptorType'
 }
+
+TYPE: Final[str] = "type"
+ITERATOR_TYPE: Final[str] = "iterator"
+VALUE: Final[str] = "value"
 
