@@ -1,0 +1,31 @@
+
+<object type="list" id="100d04bc0">
+	
+<item>
+    <key>
+        <primitive type="int">0</primitive>
+    </key>
+    <value>
+        <primitive type="int">1</primitive>
+    </value>
+</item>
+	
+<item>
+    <key>
+        <primitive type="int">1</primitive>
+    </key>
+    <value>
+        <primitive type="int">2</primitive>
+    </value>
+</item>
+	
+<item>
+    <key>
+        <primitive type="int">2</primitive>
+    </key>
+    <value>
+        <primitive type="int">5</primitive>
+    </value>
+</item>
+
+</object>
