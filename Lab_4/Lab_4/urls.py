@@ -20,6 +20,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
 
+from edostavka.views import register
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('edostavka/', include('edostavka.urls')),
