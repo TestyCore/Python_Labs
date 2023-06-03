@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import Product, ProductCategory, Manufacturer
+from django.views import generic
 
 
 def index(request):
@@ -9,7 +10,7 @@ def index(request):
     num_products = Product.objects.all().count()
     num_manufacturers = Manufacturer.objects.all().count()
 
-    # Available books (status = 'a')
+    # Available products (status = 'a')
     # num_instances_available = BookInstance.objects.filter(status__exact='a').count()
 
     # The 'all()' is implied by default.
@@ -24,4 +25,15 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+
+class ProductsListView(generic.ListView):
+    model = Product
+    paginate_by = 5
+
+
+class ProductDetailView(generic.DetailView):
+    model = Product
+
+
 
