@@ -1,55 +1,122 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
+
+from order.models import Order
+from .forms import ExtendedUserCreationForm
+from order.templates import order
 from .models import Product, ProductCategory, Manufacturer
 from django.views import generic
 
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 
 
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.models import Group
+
+# Define the user roles
+UNAUTHORIZED_ROLE = 'Unauthorized'
+CUSTOMER_ROLE = 'Customer'
+STAFF_ROLE = 'Staff'
+ADMIN_ROLE = 'Admin'
+
+
+def group_required(group_names):
+    def decorator(view_func):
+        @login_required
+        def wrapper(request, *args, **kwargs):
+            if request.user.groups.filter(name__in=group_names).exists():
+                return view_func(request, *args, **kwargs)
+            else:
+                raise PermissionDenied("Access denied.")
+        return wrapper
+    return decorator
+
+
+# def group_required_class(group_names):
+#     def decorator(view_class):
+#         decorated_view = user_passes_test(lambda user: user.groups.filter(name__in=group_names).exists())(view_class)
+#         return method_decorator(login_required(login_url='login'))(decorated_view)
+#     return decorator
+
+
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = ExtendedUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Assign the appropriate role based on the form data
+            user_role = form.cleaned_data['user_role']
+            if user_role == 'staff':
+                group = Group.objects.get_or_create(name='Staff')[0]
+                user.groups.add(group)
+            elif user_role == 'administrator':
+                group = Group.objects.get_or_create(name='Admin')[0]
+                user.groups.add(group)
+            else:
+                group = Group.objects.get_or_create(name='Customer')[0]
+                user.groups.add(group)
+            user.save()
             login(request, user)
-            return redirect('index')  # Redirect to the desired page after registration
+            return redirect('index')
     else:
-        form = UserCreationForm()
+        form = ExtendedUserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
 
+# @group_required(['Customer'])
 def index(request):
-    """View function for home page of site."""
-
-    # Generate counts of some of the main objects
-    num_products = Product.objects.all().count()
+    products = Product.objects.all()
+    num_products = products.count()
     num_manufacturers = Manufacturer.objects.all().count()
-
-    # Available products (status = 'a')
-    # num_instances_available = BookInstance.objects.filter(status__exact='a').count()
-
-    # The 'all()' is implied by default.
-    # num_authors = Author.objects.count()
 
     context = {
         'num_products': num_products,
         'num_manufacturers': num_manufacturers,
-        # 'num_instances_available': num_instances_available,
-        # 'num_authors': num_authors,
     }
 
-    # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
 
+# @group_required_class(['Customer'])
 class ProductsListView(generic.ListView):
     model = Product
     paginate_by = 5
 
+    # template_name = 'product_list.html'  # Specify the template name
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        filter_type = self.request.GET.get('filter_type')
+        sort_order = self.request.GET.get('sort_order')
+
+        if filter_type == 'name':
+            if sort_order == 'ascending':
+                queryset = queryset.order_by('title')
+            elif sort_order == 'descending':
+                queryset = queryset.order_by('-title')
+        elif filter_type == 'price':
+            if sort_order == 'ascending':
+                queryset = queryset.order_by('price')
+            elif sort_order == 'descending':
+                queryset = queryset.order_by('-price')
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter_name'] = self.request.GET.get('filter_name')
+        context['filter_price'] = self.request.GET.get('filter_price')
+        return context
+
+
+# @group_required_class(['Customer'])
 class ProductDetailView(generic.DetailView):
     model = Product
+
+
+
 
 
 

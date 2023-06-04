@@ -9,7 +9,16 @@
   <p><strong>EAN:</strong> {{ product.ean }}</p>
   <p><strong>ProductCategory:</strong> {{ product.category.all|join:", " }}</p>
 
+    {%if user.is_authenticated%}
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input type="submit" value="Add to cart">
+    </form>
+    {% endif %}
+
   <div style="margin-left:20px;margin-top:20px">
+
 {#    <h4>Copies</h4>#}
 
 {#    {% for copy in product.bookinstance_set.all %}#}

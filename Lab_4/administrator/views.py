@@ -1,0 +1,54 @@
+from django.shortcuts import render
+
+# Create your views here.
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
+
+from .forms import ProductForm
+from .templates import administrator
+from edostavka.models import Product
+
+
+def index(request):
+    products = Product.objects.all()
+    return render(request, "administrator/list_product.html", {"products": products})
+
+
+class ProductCreate(View):
+    def get(self, request):
+        form = ProductForm()
+        return render(request, 'administrator/create_product.html', {'form': form})
+
+    def post(self, request):
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('administrator:list_product')
+        return render(request, 'administrator/create_product.html', {'form': form})
+
+
+class ProductEdit(View):
+    def get(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        form = ProductForm(instance=product)
+        return render(request, 'administrator/edit_product.html', {'product': product, 'form': form})
+
+    def post(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('administrator:list_product')
+        return render(request, 'administrator/edit_product.html', {'product': product, 'form': form})
+
+
+class ProductDelete(View):
+    def get(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        return render(request, 'administrator/delete_product.html', {'product': product})
+
+    def post(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        product.delete()
+        return redirect('administrator:list_product')
