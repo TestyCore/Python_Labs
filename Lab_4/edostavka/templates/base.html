@@ -15,14 +15,27 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
+
+
+
   <body>
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-2">
           {% block sidebar %}
             <ul class="sidebar-nav">
+            <p>Current time and date: <span id="current-date-time"></span></p>
+             <script>
+                function updateDateTime() {
+                    var currentDate = new Date();
+                    var formattedDateTime = currentDate.toLocaleString();
+                    var element = document.getElementById('current-date-time');
+                    element.textContent = formattedDateTime;
+                }
+                updateDateTime();
+                setInterval(updateDateTime, 1000);
+            </script>
               <li><a href="{% url 'index' %}">Home</a></li>
-
                 {% for group in user.groups.all %}
                     {% if group.name == 'Customer' %}
                         <li><a href="{% url 'products' %}">Products</a></li>

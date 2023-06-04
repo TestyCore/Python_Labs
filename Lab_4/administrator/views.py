@@ -25,7 +25,7 @@ class ProductCreate(UserPassesTestMixin, View):
         return render(request, 'administrator/create_product.html', {'form': form})
 
     def test_func(self):
-        return  self.request.user.groups.filter(name='Admin').exists()
+        return self.request.user.groups.filter(name='Admin').exists()
 
     def post(self, request):
         form = ProductForm(request.POST)
