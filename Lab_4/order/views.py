@@ -16,6 +16,8 @@ def order_create(request):
         raise PermissionDenied("net dostpa")
 
     cart = Cart(request)
+    if cart.get_total_price() == 0:
+        return redirect('http://127.0.0.1:8000/edostavka/products/')
     if request.method == 'POST':
         order = Order.objects.create(client=request.user.username)
 
