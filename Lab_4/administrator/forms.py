@@ -1,5 +1,5 @@
 from django import forms
-from edostavka.models import Product, ProductCategory
+from edostavka.models import Product, ProductCategory, Manufacturer
 
 
 class ProductForm(forms.ModelForm):
@@ -7,6 +7,10 @@ class ProductForm(forms.ModelForm):
         queryset=ProductCategory.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False
+    )
+
+    manufacturer = forms.ModelChoiceField(
+        queryset=Manufacturer.objects.all().exclude(name='------')
     )
 
     class Meta:
@@ -17,6 +21,28 @@ class ProductForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance.pk:
             self.fields['category'].initial = self.instance.category.all()
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        price = str(price)
+        if not float(price):
+            raise forms.ValidationError('Price must contain only numbers.')
+        return price
+
+    def clean_ean(self):
+        ean = self.cleaned_data.get('ean')
+        ean = str(ean)
+        if not ean.isdigit():
+            raise forms.ValidationError('EAN must contain only numbers.')
+        if not len(ean) == 13:
+            raise forms.ValidationError('EAN must contain 13 numbers.')
+        return ean
+
+    def clean_category(self):
+        category = self.cleaned_data.get('category')
+        if not category:
+            raise forms.ValidationError('At least one category must be chosen.')
+        return category
 
     def save(self, commit=True):
         product = super().save(commit=False)

@@ -18,7 +18,6 @@ def index(request):
     return render(request, "administrator/list_product.html", {"products": products})
 
 
-#
 class ProductCreate(UserPassesTestMixin, View):
     def get(self, request):
         form = ProductForm()
