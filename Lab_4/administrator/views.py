@@ -42,7 +42,7 @@ class ProductEdit(UserPassesTestMixin, View):
         return render(request, 'administrator/edit_product.html', {'product': product, 'form': form})
 
     def test_func(self):
-        return  self.request.user.groups.filter(name='Admin').exists()
+        return self.request.user.groups.filter(name='Admin').exists()
 
     def post(self, request, id):
         product = get_object_or_404(Product, id=id)

@@ -2,6 +2,8 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 
+import requests
+
 from order.models import Order
 from .forms import ExtendedUserCreationForm
 from order.templates import order
@@ -71,9 +73,26 @@ def index(request):
     num_products = products.count()
     num_manufacturers = Manufacturer.objects.all().count()
 
+    # context = {
+    #     'num_products': num_products,
+    #     'num_manufacturers': num_manufacturers,
+    # }
+
+    try:
+        response = requests.get('https://api.kanye.rest/')
+        if response.status_code == 200:
+            data = response.json()
+            quote = data["quote"]
+        else:
+            quote = "Failed to retrieve quote."
+
+    except:
+        quote = ""
+
     context = {
         'num_products': num_products,
         'num_manufacturers': num_manufacturers,
+        'quote': quote,
     }
 
     return render(request, 'index.html', context=context)
@@ -82,7 +101,7 @@ def index(request):
 # @group_required_class(['Customer'])
 class ProductsListView(generic.ListView):
     model = Product
-    paginate_by = 5
+    # paginate_by = 5
 
     # template_name = 'product_list.html'  # Specify the template name
 
