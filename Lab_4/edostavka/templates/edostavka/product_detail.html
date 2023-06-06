@@ -3,35 +3,24 @@
 {% block content %}
   <h1>Title: {{ product.title }}</h1>
 
-  <p><strong>Manufacturer:</strong> <a href="">{{ product.manufacturer}}</a></p>
-  <!-- author detail link not yet defined -->
+  <p><strong>Manufacturer:</strong>{{ product.manufacturer}}</p>
   <p><strong>Composition:</strong> {{ product.composition }}</p>
   <p><strong>EAN:</strong> {{ product.ean }}</p>
   <p><strong>ProductCategory:</strong> {{ product.category.all|join:", " }}</p>
+  <p><strong>Price:</strong> {{ product.price }}</p>
 
     {%if user.is_authenticated%}
-    <form action="{% url 'cart:cart_add' product.id %}" method="post">
-        {{ cart_product_form }}
-        {% csrf_token %}
-        <input type="submit" value="Add to cart">
-    </form>
+        {% for group in user.groups.all %}
+            {% if group.name == 'Customer' %}
+                 <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Add to cart">
+                </form>
+            {% endif %}
+    {% endfor %}
+
     {% endif %}
 
   <div style="margin-left:20px;margin-top:20px">
-
-{#    <h4>Copies</h4>#}
-
-{#    {% for copy in product.bookinstance_set.all %}#}
-{#      <hr />#}
-{#      <p#}
-{#        class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">#}
-{#        {{ copy.get_status_display }}#}
-{#      </p>#}
-{#      {% if copy.status != 'a' %}#}
-{#        <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>#}
-{#      {% endif %}#}
-{#      <p><strong>Imprint:</strong> {{ copy.imprint }}</p>#}
-{#      <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>#}
-{#    {% endfor %}#}
   </div>
 {% endblock %}

@@ -29,7 +29,7 @@ def order_create(request):
                                      product=item['product'],
                                      price=item['price'],
                                      quantity=item['quantity'])
-            item['product'].price += item['quantity']
+            # item['product'].price += item['quantity']
             item['product'].save()
 
         # cart.clear()
@@ -86,23 +86,33 @@ class OrderListView(generic.ListView):
     model = Order
     queryset = Order.objects.order_by('client')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        total_cost = Order.objects.aggregate(total=Sum('items__price')).get('total')
-        order_count = Order.objects.count()
-        average_cost = total_cost / order_count if order_count > 0 else 0
-        order_prices = Order.objects.values_list('items__price', flat=True)
-        mode_cost = mode(order_prices) if order_prices else 0
-        median_cost = median(order_prices) if order_prices else 0
 
-        most_common_item = Order.objects.values('items__product__title').annotate(
-            count=Count('items__product__title')).order_by('-count').first()
-        most_common_item_name = most_common_item['items__product__title'] if most_common_item else ''
 
-        context['total_cost'] = "{:.2f}".format(total_cost or 0)
-        context['average_cost'] = "{:.2f}".format(average_cost or 0)
-        context['mode_cost'] = "{:.2f}".format(mode_cost or 0)
-        context['median_cost'] = "{:.2f}".format(median_cost or 0)
-        context['most_common_item_name'] = most_common_item_name
 
-        return context
+
+
+
+
+
+
+
+
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     total_cost = Order.objects.aggregate(total=Sum('items__price')).get('total')
+    #     order_count = Order.objects.count()
+    #     average_cost = total_cost / order_count if order_count > 0 else 0
+    #     order_prices = Order.objects.values_list('items__price', flat=True)
+    #     mode_cost = mode(order_prices) if order_prices else 0
+    #
+    #     most_common_item = Order.objects.values('items__product__title').annotate(
+    #         count=Count('items__product__title')).order_by('-count').first()
+    #     most_common_item_name = most_common_item['items__product__title'] if most_common_item else ''
+    #
+    #     context['total_cost'] = "{:.2f}".format(total_cost or 0)
+    #     context['average_cost'] = "{:.2f}".format(average_cost or 0)
+    #     context['mode_cost'] = "{:.2f}".format(mode_cost or 0)
+    #     context['most_common_item_name'] = most_common_item_name
+    #
+    #     return context

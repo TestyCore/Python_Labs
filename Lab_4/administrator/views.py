@@ -55,12 +55,9 @@ class ProductEdit(UserPassesTestMixin, View):
 class ProductDelete(UserPassesTestMixin, View):
     def get(self, request, id):
         product = get_object_or_404(Product, id=id)
-        return render(request, 'administrator/delete_product.html', {'product': product})
-
-    def post(self, request, id):
-        product = get_object_or_404(Product, id=id)
         product.delete()
         return redirect('administrator:list_product')
+
 
     def test_func(self):
         return self.request.user.groups.filter(name='Admin').exists()

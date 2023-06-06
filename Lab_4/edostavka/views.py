@@ -1,13 +1,9 @@
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
-from django.utils.decorators import method_decorator
 
 import requests
 
-from order.models import Order
 from .forms import ExtendedUserCreationForm
-from order.templates import order
-from .models import Product, ProductCategory, Manufacturer
+from .models import Product, Manufacturer
 from django.views import generic
 
 from django.contrib.auth import login

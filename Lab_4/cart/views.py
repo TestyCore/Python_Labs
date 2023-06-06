@@ -32,5 +32,5 @@ def cart_remove(request, product_id):
 def cart_detail(request):
     if not request.user.is_authenticated:
         return redirect('index')
-    cart = Cart(request)
-    return render(request, 'cart/detail.html', {'cart': cart})
+    # cart = Cart(request)
+    return render(request, 'cart/detail.html')

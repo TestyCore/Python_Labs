@@ -49,6 +49,7 @@ class ProductForm(forms.ModelForm):
         if commit:
             product.save()
         if self.cleaned_data['category']:
+            a = self.cleaned_data['category']
             product.category.set(self.cleaned_data['category'])
         else:
             product.category.clear()

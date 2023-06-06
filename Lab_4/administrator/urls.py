@@ -13,6 +13,3 @@ urlpatterns = [
     path('delete/<int:id>/', administrator.views.ProductDelete.as_view(), name='delete_product'),
     path('edit/<int:id>/', administrator.views.ProductEdit.as_view(), name='edit_product'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
