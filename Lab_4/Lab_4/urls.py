@@ -6,6 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
     path('order/', include('order.urls', namespace='order')),
+    path('client_list/', include('client_list.urls', namespace='client_list')),
     path('administrator/', include('administrator.urls', namespace='administrator')),
     path('edostavka/', include('edostavka.urls')),
     path('', RedirectView.as_view(url='edostavka/')),

@@ -78,8 +78,7 @@ def order_create(request):
         # return render(request, 'order/created.html',
         #                {'order': order})
 
-    return render(request, 'order/create.html',
-                  {'cart': cart})
+    return render(request, 'order/create.html', {'cart': cart})
 
 
 class OrderListView(generic.ListView):

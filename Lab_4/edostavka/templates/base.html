@@ -45,6 +45,7 @@
 
                 {% for group in user.groups.all %}
                     {% if group.name == 'Staff' %}
+                        <li><a href="{% url 'client_list:client_list' %}">Clients</a></li>
                         <li><a href="{% url 'order:orders' %}">All orders</a></li>
                     {% endif %}
                 {% endfor %}

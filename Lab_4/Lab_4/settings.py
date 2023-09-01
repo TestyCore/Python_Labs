@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cart',
     'order.apps.OrderConfig',
     'administrator',
+    'client_list',
 ]
 
 MIDDLEWARE = [
