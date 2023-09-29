@@ -11,7 +11,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'client',
                     'created']
     list_filter = ['created']
-    inlines = [OrderItemInline]
+    inlines = [OrderItemInline]  # Это список встроенных представлений, которые будут отображаться на странице
+    # заказа. В данном случае, используется OrderItemInline, чтобы отображать элементы заказа внутри страницы заказа.
 
 
 admin.site.register(Order, OrderAdmin)

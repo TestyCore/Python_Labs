@@ -58,6 +58,5 @@ class ProductDelete(UserPassesTestMixin, View):
         product.delete()
         return redirect('administrator:list_product')
 
-
     def test_func(self):
         return self.request.user.groups.filter(name='Admin').exists()

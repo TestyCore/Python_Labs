@@ -12,3 +12,8 @@ urlpatterns = [
          views.cart_remove,
          name='cart_remove'),
 ]
+
+# path(route, view, name=None)
+# route - URL
+# view - view_function that process request
+# name - route name

@@ -45,7 +45,9 @@ class ProductForm(forms.ModelForm):
         return category
 
     def save(self, commit=True):
-        product = super().save(commit=False)
+        product = super().save(commit=False)  # Эта строка вызывает метод save родительского класса (класса-предка
+        # формы) с параметром commit=False. commit=False означает, что объект product будет создан, но не будет
+        # сохранен в базе данных.
         if commit:
             product.save()
         if self.cleaned_data['category']:
